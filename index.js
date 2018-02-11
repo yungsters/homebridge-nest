@@ -211,6 +211,13 @@ NestPlatform.prototype = {
 
 		var that = this;
 
+		var isStructureIncluded = function(structure) {
+			return (
+				that.config.structures == null ||
+				that.config.structures.indexOf(structure.name) !== -1
+			);
+		};
+
 		var generateAccessories = function(data) {
 			var foundAccessories = [];
 
@@ -221,9 +228,11 @@ NestPlatform.prototype = {
 						var device = list[deviceId];
 						var structureId = device['structure_id'];
 						var structure = data.structures[structureId];
-						var accessory = new DeviceType(this.conn, this.log, device, structure);
-						that.accessoryLookup[deviceId] = accessory;
-						foundAccessories.push(accessory);
+						if (isStructureIncluded(structure)) {
+							var accessory = new DeviceType(this.conn, this.log, device, structure);
+							that.accessoryLookup[deviceId] = accessory;
+							foundAccessories.push(accessory);
+						}
 					}
 				}
 			}.bind(this);
@@ -240,7 +249,9 @@ NestPlatform.prototype = {
 				var device = data.devices[acc.deviceGroup][acc.deviceId];
 				var structureId = device['structure_id'];
 				var structure = data.structures[structureId];
-				acc.updateData(device, structure);
+				if (isStructureIncluded(structure)) {
+					acc.updateData(device, structure);
+				}
 			}.bind(this));
 		};
 

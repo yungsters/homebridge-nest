@@ -1,6 +1,6 @@
 {
-  "name": "homebridge-nest-stemwinder",
-  "description": "Nest plugin for homebridge",
+  "name": "homebridge-nest-modern",
+  "description": "Homebridge plugin for Nest.",
   "version": "1.2.8",
   "repository": {
     "type": "git",
